@@ -1,0 +1,15 @@
+nc: 4
+train: ../dataset/images/train
+val: ../dataset/images/val
+test: ../dataset/images/test
+
+names:
+  0: Type1-Offshore Life Jacket
+  1: Type2-Near-Shore Buoyant Vest
+  2: Type3-Floatation Aid
+  3: Type4-Inflatable Life Jacket
+  
+
+
+
+

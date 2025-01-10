@@ -1,0 +1,16 @@
+path: ../dataset  # dataset root dir
+train: images/train
+val: images/val
+test: images/test
+
+# Classes (4 COCO classes)
+names:
+  0: Type1-Offshore Life Jacket
+  1: Type2-Near-Shore Buoyant Vest
+  2: Type3-Floatation Aid
+  3: Type4-Inflatable Life Jacket
+  
+
+
+
+
