@@ -14,3 +14,19 @@ Type 1 Offshore Life Jacket, Type 2 Near-Shore Buoyant Vest, Type 3 Floatation A
 | YOLOv10  | 0.63  | 0.499 | 0.565 | 0.401  |
 
 
+## Acknowledgements
+<details><summary> <b>Expand</b> </summary>
+
+* Learning Multi-Scale Photo Exposure Correction: [https://github.com/mahmoudnafifi/Exposure_Correction](https://github.com/mahmoudnafifi/Exposure_Correction) - The best overexposure methed in this research
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2) - The best low light methed in this research
+* Exposure-Correction-BMVC-2021: [https://github.com/elientumba2019/Exposure-Correction-BMVC-2021](https://github.com/elientumba2019/Exposure-Correction-BMVC-2021)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
+
+</details>
