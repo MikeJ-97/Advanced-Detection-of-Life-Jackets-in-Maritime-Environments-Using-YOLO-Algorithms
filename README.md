@@ -1,1 +1,1 @@
-Advanced Detection of Life Jackets in Maritime Environments Using YOLO Algorithms
+**Advanced Detection of Life Jackets in Maritime Environments Using YOLO Algorithms**
