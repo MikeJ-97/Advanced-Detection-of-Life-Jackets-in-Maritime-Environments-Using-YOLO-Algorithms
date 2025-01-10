@@ -1,14 +1,12 @@
 # Advanced Detection of Life Jackets in Maritime Environments Using YOLO Algorithms
 
-<div align="center">
-    <a href="./">
-        <img src="Result.png"/>
-    </a>
-</div>
+
 
 **Types Of Class in Dataset**
 
-Type 1 Offshore Life Jacket, Type 2 Near-Shore Buoyant Vest, Type 3 Floatation Aid, Type 4 Inflatable Life Jacket
+| <img src="Custom_dataset/images/test/Test1 (1).jpg" height="150px" width="500px"/> | <img src="Custom_dataset/images/test/Test2 (11).jpg" height="150px" width="500px"/> | <img src="Custom_dataset/images/test/Test3 (8).jpg" height="150px" width="500px"/> | <img src="Custom_dataset/images/test/Test4 (1).jpg" height="150px" width="500px"/> |
+| --------------------------- | ------------------------------ | --------------------- | ----------------------------- |
+| Type 1 Offshore Life Jacket | Type 2 Near-Shore Buoyant Vest | Type 3 Floatation Aid | Type 4 Inflatable Life Jacket |
 
 **Accuracy Metric Table (ALL Class)**
 | All  | Precision | Recall  | mAP50 | mAP50-95  | 
@@ -20,6 +18,9 @@ Type 1 Offshore Life Jacket, Type 2 Near-Shore Buoyant Vest, Type 3 Floatation A
 | YOLOv9   | 0.633 | 0.492 | 0.591 | 0.425  |
 | YOLOv10  | 0.63  | 0.499 | 0.565 | 0.401  |
 
+<div align="center">
+    <img src="Result.png"/>
+</div>
 
 ## Acknowledgements
 <details><summary> <b>Expand</b> </summary>
