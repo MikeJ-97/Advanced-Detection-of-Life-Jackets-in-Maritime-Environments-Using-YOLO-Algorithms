@@ -28,13 +28,5 @@
 * Learning Multi-Scale Photo Exposure Correction: [https://github.com/mahmoudnafifi/Exposure_Correction](https://github.com/mahmoudnafifi/Exposure_Correction) - The best overexposure methed in this research
 * MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2) - The best low light methed in this research
 * Exposure-Correction-BMVC-2021: [https://github.com/elientumba2019/Exposure-Correction-BMVC-2021](https://github.com/elientumba2019/Exposure-Correction-BMVC-2021)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
-* MIRNetv2: [https://github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)
 
 </details>
