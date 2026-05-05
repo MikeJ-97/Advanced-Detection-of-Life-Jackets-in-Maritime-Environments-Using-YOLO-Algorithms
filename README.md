@@ -22,17 +22,17 @@ Across all experimental conditions, **YOLOv10** consistently delivered the best 
 
 ## Key Contributions
 
-- **Custom dataset** of 1,630 annotated images covering four U.S. Coast Guard life-jacket categories (filling a gap in publicly available SAR data).
+- **Custom dataset** of 1,630 annotated images covering four distinct life-jacket categories — Offshore, Near-Shore Buoyant Vest, Floatation Aid, and Inflatable — addressing the lack of publicly available SAR-specific data.
 - **Comprehensive benchmark** of YOLOv5 → YOLOv12 plus SSD and Faster R-CNN under one fixed training protocol.
-- **Lighting-stress test set**: the test split is augmented into four additional variants — `Bright V1`, `Bright V2`, `Dark V1`, `Dark V2` — to quantify robustness.
-- **Preprocessing study** identifying *Learning Multi-Scale Photo Exposure Correction* as the most consistent overexposure fix, and *MIRNetv2* (NTIRE 2024 winner) as the strongest LLIE method.
-- **Released artefacts**: dataset, configs and trained weights for every YOLO version (`Trained_weights/Yolov5` … `Yolov12`), so results can be reproduced or extended.
+- **Lighting-stress evaluation** across five conditions per test image — original (`O`), two overexposure levels (`B1`, `B2`) and two underexposure levels (`D1`, `D2`) — quantifying robustness to illumination shift.
+- **Preprocessing study** of 12 enhancement methods (classical + deep learning) applied to the lighting-stressed test set, identifying *Learning Multi-Scale Photo Exposure Correction* as the most consistent overexposure fix and *MIRNetv2* (NTIRE 2024 top performer) as the strongest LLIE method.
+- **Released artefacts**: dataset, the 6,000-image preprocessing × lighting ablation grid, configs, and trained weights for every YOLO version plus SSD and Faster R-CNN — so every result can be reproduced or extended.
 
 ---
 
 ## Dataset — *Types of Life Jacket*
 
-| <img src="Custom_dataset/images/test/Test1 (1).jpg" height="150px" width="500px"/> | <img src="Custom_dataset/images/test/Test2 (11).jpg" height="150px" width="500px"/> | <img src="Custom_dataset/images/test/Test3 (8).jpg" height="150px" width="500px"/> | <img src="Custom_dataset/images/test/Test4 (1).jpg" height="150px" width="500px"/> |
+| <img src="Custom_dataset/images/test/O/Testing1%20%281%29.jpg" height="150" width="500"/> | <img src="Custom_dataset/images/test/O/Testing2%20%2811%29.jpg" height="150" width="500"/> | <img src="Custom_dataset/images/test/O/Testing3%20%288%29.jpg" height="150" width="500"/> | <img src="Custom_dataset/images/test/O/Testing4%20%281%29.jpg" height="150" width="500"/> |
 | --------------------------- | ------------------------------ | --------------------- | ----------------------------- |
 | Type 1 Offshore Life Jacket | Type 2 Near-Shore Buoyant Vest | Type 3 Floatation Aid | Type 4 Inflatable Life Jacket |
 
@@ -49,7 +49,7 @@ Across all experimental conditions, **YOLOv10** consistently delivered the best 
 
 Annotations were produced manually with **LabelImg** in YOLO format. Dataset configuration files are provided for both the standard YOLO (`Custom_dataset/dataset.yaml`) and YOLOv7 (`Custom_dataset/Yolo7_dataset.yaml`) layouts.
 
-The test split is also released in four lighting-augmented variants (`test Bright V1/V2`, `test Dark V1/V2`) under `Custom_dataset/images/`, used to evaluate detector robustness under non-ideal illumination.
+The test split (`Custom_dataset/images/test/`) is itself organised into the five lighting conditions used in the robustness study — `O` (original), `B1` / `B2` (overexposed levels 1 and 2), `D1` / `D2` (underexposed levels 1 and 2). The preprocessing-method outputs (`Custom_dataset/images/<NN> <Method>/`) follow the same `O / B1 / B2 / D1 / D2` substructure, giving a 12 × 5 ablation grid.
 
 ---
 
@@ -61,9 +61,12 @@ The test split is also released in four lighting-augmented variants (`test Brigh
 │   ├── dataset.yaml                # YOLO v5/6/8/9/10/11/12 config
 │   ├── Yolo7_dataset.yaml          # YOLOv7-style config
 │   ├── images/
-│   │   ├── train/  val/  test/                # original splits
-│   │   └── <NN> <Method>/                     # 12 preprocessing-method outputs
-│   │       └── O/ B1/ B2/ D1/ D2/             # 5 lighting conditions per method
+│   │   ├── train/                              # 1,430 training images
+│   │   ├── val/                                # 100 validation images
+│   │   ├── test/                               # 100 test images per lighting condition
+│   │   │   └── O/ B1/ B2/ D1/ D2/              # 5 lighting conditions
+│   │   └── <NN> <Method>/                      # 12 preprocessing-method outputs
+│   │       └── O/ B1/ B2/ D1/ D2/              # same 5 lighting conditions, post-preprocessing
 │   └── labels/                     # YOLO-format annotations (train/val/test)
 ├── Trained_weights/
 │   ├── Yolov5/                     # full Ultralytics training-output dir per version
@@ -108,11 +111,11 @@ Shared across **all** models:
 
 Optimizer choice follows each framework's tuned defaults — forcing one optimizer across both ecosystems would push them out of their well-validated regimes:
 
-| Model family            | Optimizer       | Initial LR | LR schedule              | Source of defaults                    |
-| ----------------------- | --------------- | ---------- | ------------------------ | ------------------------------------- |
-| YOLOv5 → YOLOv12        | **Adam**        | 1 × 10⁻³   | Ultralytics built-in     | Ultralytics framework defaults        |
-| SSD (TF Object Detection API)        | **Momentum SGD** | 0.08       | Cosine decay, 2,500-step warmup | TF Model Zoo `ssd_*` template          |
-| Faster R-CNN (TF Object Detection API) | **Momentum SGD** | 0.16       | Cosine decay, 2,500-step warmup | TF Model Zoo `faster_rcnn_*` template |
+| Model family                           | Optimizer        | LR schedule                       | Source of defaults                    |
+| -------------------------------------- | ---------------- | --------------------------------- | ------------------------------------- |
+| YOLOv5 → YOLOv12                       | **Adam**         | Ultralytics built-in              | Ultralytics framework defaults        |
+| SSD (TF Object Detection API)          | **Momentum SGD** | Cosine decay, 2,500-step warmup   | TF Model Zoo `ssd_*` template         |
+| Faster R-CNN (TF Object Detection API) | **Momentum SGD** | Cosine decay, 2,500-step warmup   | TF Model Zoo `faster_rcnn_*` template |
 
 This keeps each detector in the configuration regime its authors validated, while **input resolution, batch size, and epoch count are held constant** — the variables most directly responsible for "how much, and how fine-grained, the training signal is."
 
@@ -131,20 +134,22 @@ Document whichever path you took in your training logs.
 
 ## Results
 
-### Detection accuracy on the custom test set (all classes)
+### Overall detection accuracy on the custom dataset (all classes)
 
-| Model    | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 |
-| -------- | --------- | ------ | ------- | ------------ |
-| YOLOv5   | 0.535     | 0.572  | 0.553   | 0.372        |
-| YOLOv6   | 0.522     | 0.603  | 0.577   | 0.399        |
-| YOLOv7   | 0.567     | 0.601  | 0.577   | 0.373        |
-| YOLOv8   | 0.568     | 0.514  | 0.596   | 0.413        |
-| YOLOv9   | 0.633     | 0.492  | 0.591   | 0.425        |
-| YOLOv10  | 0.630     | 0.499  | 0.565   | 0.401        |
-| YOLOv11  | _TBD_     | _TBD_  | _TBD_   | _TBD_        |
-| YOLOv12  | _TBD_     | _TBD_  | _TBD_   | _TBD_        |
+| Model        | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 |
+| ------------ | --------- | ------ | ------- | ------------ |
+| YOLOv5       | 0.535     | 0.572  | 0.553   | 0.372        |
+| YOLOv6       | 0.522     | 0.603  | 0.577   | 0.399        |
+| YOLOv7       | 0.567     | 0.601  | 0.577   | 0.373        |
+| YOLOv8       | 0.568     | 0.514  | 0.596   | 0.413        |
+| YOLOv9       | 0.633     | 0.492  | 0.591   | 0.425        |
+| YOLOv10      | 0.630     | 0.499  | 0.565   | 0.401        |
+| YOLOv11      | 0.571     | 0.580  | 0.595   | 0.425        |
+| YOLOv12      | 0.569     | 0.424  | 0.525   | 0.356        |
+| SSD          | 0.449     | 0.594  | 0.485   | 0.273        |
+| Faster R-CNN | 0.481     | 0.634  | 0.508   | 0.357        |
 
-> Fill in the YOLOv11 / YOLOv12 cells from Table in the manuscript before publishing the repo.
+*Numbers correspond to **Table 6** in the paper — end-of-training **validation-set** performance (n = 100 validation images), used during model development. Column leaders: YOLOv9 on precision (0.633), Faster R-CNN on recall (0.634), YOLOv8 on mAP@0.5 (0.596); YOLOv9 and YOLOv11 tie on mAP@0.5:0.95 (0.425). The lighting-stress evaluation in §4 uses the **test set** (n = 100 test images), reported in Table 8 of the paper — small numerical differences between the two slices are expected and explicitly discussed in the manuscript.*
 
 <div align="center">
     <img src="Result.png"/>
@@ -152,10 +157,10 @@ Document whichever path you took in your training logs.
 
 ### Robustness under varying lighting
 
-Each model was re-evaluated on the four lighting variants (`Bright V1/V2`, `Dark V1/V2`) with and without preprocessing. Two preprocessing pipelines were the strongest overall:
+Every model was re-evaluated across **five lighting conditions** — original (`O`), two overexposure levels (`B1`, `B2`), and two underexposure levels (`D1`, `D2`) — both without preprocessing (Table 8 in the paper) and with each of the 12 preprocessing methods (Tables 9–13). Headline winners reported in the paper's conclusion:
 
-- **Overexposure** → *Learning Multi-Scale Photo Exposure Correction* ([Afifi et al., CVPR 2021](https://github.com/mahmoudnafifi/Exposure_Correction))
-- **Low-light**    → **MIRNetv2** ([Zamir et al.](https://github.com/swz30/MIRNetv2)) — top performer in NTIRE 2024
+- **Overexposure** → *Learning Multi-Scale Photo Exposure Correction* ([Afifi et al.](https://github.com/mahmoudnafifi/Exposure_Correction)) — most consistent gains across overexposed scenarios.
+- **Low-light**    → **MIRNetv2** ([Zamir et al.](https://github.com/swz30/MIRNetv2)) — a top performer in the NTIRE 2024 Challenge; most effective in underexposed scenarios overall.
 
 Applying these preprocessors before YOLOv10 inference recovered most of the accuracy lost to illumination extremes, validating the two-stage *enhance-then-detect* design for maritime SAR.
 
@@ -178,7 +183,7 @@ from ultralytics import YOLO
 
 model = YOLO("Trained_weights/Yolov10/weights/best.pt")
 results = model.predict(
-    source="Custom_dataset/images/test",
+    source="Custom_dataset/images/test/O",   # original-lighting test images
     imgsz=320,
     conf=0.25,
     save=True,
@@ -222,7 +227,7 @@ category_index = label_map_util.create_category_index_from_labelmap(
 )
 
 import numpy as np, cv2
-img = cv2.imread("Custom_dataset/images/test/Test1 (1).jpg")
+img = cv2.imread("Custom_dataset/images/test/O/Testing1 (1).jpg")
 input_tensor = tf.convert_to_tensor(img[None, ...])
 detections = detect_fn(input_tensor)
 ```
@@ -262,10 +267,32 @@ If `git lfs pull` fails, the SavedModel will load but inference will produce gar
 ## Acknowledgements
 <details><summary><b>Expand</b></summary>
 
-* **Learning Multi-Scale Photo Exposure Correction** — [github.com/mahmoudnafifi/Exposure_Correction](https://github.com/mahmoudnafifi/Exposure_Correction) — best overexposure correction method in this study.
-* **MIRNetv2** — [github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2) — best low-light enhancement method in this study.
-* **Exposure-Correction-BMVC-2021** — [github.com/elientumba2019/Exposure-Correction-BMVC-2021](https://github.com/elientumba2019/Exposure-Correction-BMVC-2021)
-* **Ultralytics YOLO** — [github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics) — training & evaluation framework for YOLOv5/6/8–12.
+### Preprocessing methods evaluated in the lighting-robustness study
+
+The 12 enhancement techniques benchmarked in `Custom_dataset/images/<NN> <Method>/` are:
+
+| #  | Method                                          | Type            | Reference                                                                                            |
+| -- | ----------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------- |
+| 1  | Histogram Equalization                          | Classical       | OpenCV `cv2.equalizeHist`; refs [110–114] in the paper                                               |
+| 2  | CLAHE                                           | Classical       | OpenCV `cv2.createCLAHE`; Reza, *J. VLSI Signal Process.* (2004) [140]                               |
+| 3  | Exposure-Correction-BMVC-2021 (Nsampi et al.)   | Deep learning   | [github.com/elientumba2019/Exposure-Correction-BMVC-2021](https://github.com/elientumba2019/Exposure-Correction-BMVC-2021) |
+| 4  | Illumination Adaptive Transformer (Cui et al.)  | Deep learning   | [arxiv.org/abs/2205.14871](https://arxiv.org/abs/2205.14871)                                         |
+| 5  | PSENet — Progressive Self-Enhancement Network (Nguyen et al.) | Deep learning | [arxiv.org/abs/2210.00712](https://arxiv.org/abs/2210.00712)                            |
+| 6  | LCDPNet (Wang et al.)                           | Deep learning   | [hywang99.github.io/lcdpnet](https://hywang99.github.io/lcdpnet/)                                    |
+| 7  | Learning Multi-Scale Photo Exposure Correction (Afifi et al.) — **best overexposure method in this study** | Deep learning | [github.com/mahmoudnafifi/Exposure_Correction](https://github.com/mahmoudnafifi/Exposure_Correction) |
+| 8  | LLFormer (Wang et al.)                          | Deep learning   | [arxiv.org/abs/2212.11548](https://arxiv.org/abs/2212.11548)                                         |
+| 9  | RetinexMamba (Bai et al.)                       | Deep learning   | [arxiv.org/abs/2405.03349](https://arxiv.org/abs/2405.03349)                                         |
+| 10 | Zero-DCE (Guo et al., CVPR 2020)                | Deep learning   | [github.com/Li-Chongyi/Zero-DCE](https://github.com/Li-Chongyi/Zero-DCE)                             |
+| 11 | MIRNetv2 — Color Enhancement variant (Zamir et al.) | Deep learning | [github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2)                                       |
+| 12 | MIRNetv2 — Low-Light Enhancement variant (Zamir et al.) — **best low-light method in this study (NTIRE 2024 winner)** | Deep learning | [github.com/swz30/MIRNetv2](https://github.com/swz30/MIRNetv2) |
+
+### Detection frameworks
+
+* **Ultralytics YOLO** — [github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics) — training & evaluation framework for YOLOv5, v6, v8–v12.
+* **YOLOv7** — [github.com/WongKinYiu/yolov7](https://github.com/WongKinYiu/yolov7).
+* **TensorFlow Object Detection API** — used for the SSD and Faster R-CNN baselines.
+
+### Funding
 
 We gratefully acknowledge **Universiti Tunku Abdul Rahman** for supporting this research.
 

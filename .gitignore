@@ -43,6 +43,12 @@ Trained_weights/Yolov*/val_batch*.jpg
 Trained_weights/Yolov*/exp*/train_batch*.jpg
 Trained_weights/Yolov*/exp*/val_batch*.jpg
 
+# --- Manuscript drafts (kept locally, never committed) ---
+*.docx
+*.doc
+~$*.docx
+~$*.doc
+
 # --- OS / editor cruft ---
 .DS_Store
 Thumbs.db
