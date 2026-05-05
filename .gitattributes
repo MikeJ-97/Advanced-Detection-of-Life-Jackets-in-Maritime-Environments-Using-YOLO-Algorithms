@@ -1,9 +1,0 @@
-# Git LFS — track TensorFlow SavedModel weight shards.
-# Faster R-CNN's variables.data-00000-of-00001 is ~228 MB, well over GitHub's
-# 100 MB per-file limit. We use a broad glob (rather than naming Faster R-CNN
-# specifically) so future retrains of any baseline are automatically covered.
-Trained_weights/**/saved_model/variables/variables.data-* filter=lfs diff=lfs merge=lfs -text
-
-# YOLO checkpoints are well under the limit today, but if you ever swap in a
-# larger backbone (e.g. yolov10x), uncomment the line below to be safe.
-# Trained_weights/**/best.pt filter=lfs diff=lfs merge=lfs -text
