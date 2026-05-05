@@ -1,0 +1,20 @@
+item {
+  id: 1
+  name: 'Type1-Offshore Life Jacket'
+}
+
+item {
+  id: 2
+  name: 'Type2-Near-Shore Buoyant Vest'
+}
+
+item {
+  id: 3
+  name: 'Type3-Floatation Aid'
+}
+
+item {
+  id: 4
+  name: 'Type4-Inflatable Life Jacket'
+}
+
